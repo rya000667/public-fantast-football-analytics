@@ -1,2 +1,7 @@
 dotenv
 requests
+nflreadpy
+pyarrow
+pandas
+altair
+numpy
