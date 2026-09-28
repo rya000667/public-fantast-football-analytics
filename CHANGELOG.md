@@ -1,7 +1,7 @@
 # ChangeLog
 
 ## Features to Work (unreleased)
-- Creation of Join Key across nflreadpy data and api.collegefootballdata
+- Creation of Join Key across nflreadpy data and api.collegefootballdata (fullname - year - position looks hopeful)
 - Continued EDA across position players (RB, Receivers, Defense, others can be added as needed)
 - EDA of fantasy points data and later tie in to position players
 - Correlation Analysis between position group features and fantasy points
