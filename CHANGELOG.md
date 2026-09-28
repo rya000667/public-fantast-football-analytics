@@ -2,13 +2,6 @@
 
 ## Features to Work (unreleased)
 - Creation of Join Key across nflreadpy data and api.collegefootballdata (fullname - year - position looks hopeful)
-- Continued EDA across position players (RB, Receivers, Defense, others can be added as needed)
-- EDA of fantasy points data and later tie in to position players
-- Correlation Analysis between position group features and fantasy points
-- Line Graphs
-- Correlation Heatmap
-- Histogram
-- Scatter Plot
 - Box plot
 - Violin Plot
 - Dendrogram
@@ -29,6 +22,12 @@
 - Initial RB DataFrame
 - Initial Receiver DataFrame
 - Initial Defense DataFrame
+- Correlation Heatmap
+- Scatter Plot
+- Histogram
+- Line Graphs
+- EDA of fantasy points data and later tie in to position players
+- Continued EDA across position players (RB, Receivers, Defense, others can be added as needed)
 
 #### api.collegefootballdata Features
 - api.collegefootballdata.com ingestion

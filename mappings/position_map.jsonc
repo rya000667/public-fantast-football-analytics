@@ -1,0 +1,53 @@
+/*
+ Mapping file for positions to standardized abbreivations
+ This will be used by the utils_data_cleansing module
+ method in module will first convert value to lowercase and check the mapping
+
+ Expected Values
+ QB
+ RB
+ ['WR', 'TE']
+ ['DE', 'DT', 'LB', 'CB', 'S', 'FS', 'MLB', 'NT', 'ILB', 'DL', 'DB']
+ ['K', 'P', 'LS']
+ Note: All linebackers in draft data are listed as linebacker so all will be mapped as LB.  This does not affect analysis since all are 
+ grouped as defense
+ */
+{
+    "qb": "QB",
+    "quarterback": "QB",
+    "rb": "RB",
+    "running back": "RB",
+    "wr": "WR",
+    "wide receiver": "WR",
+    "te": "TE",
+    "tight end": "TE",
+    "de": "DE",
+    "defensive end": "DE",
+    "defensive edge": "DE",
+    "dt": "DT",
+    "defensive tackle": "DT",
+    "lb": "LB",
+    "linebacker": "LB",
+    "cb": "CB",
+    "cornerback": "CB",
+    "s": "S",
+    "safety": "S",
+    "fs": "FS",
+    "free safety": "FS",
+    "mlb": "MLB",
+    "middle linebacker": "MLB",
+    "nt": "NT",
+    "nose tackle": "NT",
+    "ilb": "ILB",
+    "inside linebacker": "ILB",
+    "dl": "DL",
+    "defensive lineman": "DL",
+    "db": "DB",
+    "defensive back": "DB",
+    "k": "K",
+    "place kicker": "K",
+    "p": "P",
+    "punter": "P",
+    "ls": "LS",
+    "long snapper": "LS"
+}
