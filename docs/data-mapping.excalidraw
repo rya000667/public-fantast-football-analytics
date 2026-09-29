@@ -6,8 +6,8 @@
     {
       "id": "OXxjY2n9qOKVSPKEyGXCx",
       "type": "rectangle",
-      "x": 294.15239065358026,
-      "y": 169.00597079563124,
+      "x": 130.58268357098154,
+      "y": 169.74663043639316,
       "width": 274.9140625,
       "height": 237.4140625,
       "angle": 0,
@@ -25,24 +25,28 @@
         "type": 3
       },
       "seed": 1622800796,
-      "version": 114,
-      "versionNonce": 530598172,
+      "version": 167,
+      "versionNonce": 819987638,
       "isDeleted": false,
       "boundElements": [
         {
           "type": "text",
           "id": "b2CE1qPavkqNq7paZpWcN"
+        },
+        {
+          "id": "7vPI80qjAtSQDwg3aPJpc",
+          "type": "arrow"
         }
       ],
-      "updated": 1790637748561,
+      "updated": 1790639704054,
       "link": null,
       "locked": false
     },
     {
       "id": "b2CE1qPavkqNq7paZpWcN",
       "type": "text",
-      "x": 349.9194881267248,
-      "y": 174.00597079563124,
+      "x": 186.34978104412608,
+      "y": 174.74663043639316,
       "width": 163.37986755371094,
       "height": 50,
       "angle": 0,
@@ -58,11 +62,11 @@
       "index": "a0V",
       "roundness": null,
       "seed": 493928220,
-      "version": 40,
-      "versionNonce": 1735443868,
+      "version": 92,
+      "versionNonce": 1529478646,
       "isDeleted": false,
-      "boundElements": null,
-      "updated": 1790637748561,
+      "boundElements": [],
+      "updated": 1790639704054,
       "link": null,
       "locked": false,
       "text": "collegesports-api\nstats",
@@ -97,16 +101,24 @@
         "type": 3
       },
       "seed": 271945884,
-      "version": 296,
-      "versionNonce": 2128070564,
+      "version": 298,
+      "versionNonce": 113779510,
       "isDeleted": false,
       "boundElements": [
         {
           "type": "text",
           "id": "1dbRu0PO6TjEtqOULogEN"
+        },
+        {
+          "id": "7vPI80qjAtSQDwg3aPJpc",
+          "type": "arrow"
+        },
+        {
+          "id": "MpNYOc75yEZamzuYoxTGR",
+          "type": "arrow"
         }
       ],
-      "updated": 1790637714129,
+      "updated": 1790639691568,
       "link": null,
       "locked": false
     },
@@ -133,7 +145,7 @@
       "version": 29,
       "versionNonce": 2062006820,
       "isDeleted": false,
-      "boundElements": null,
+      "boundElements": [],
       "updated": 1790637715309,
       "link": null,
       "locked": false,
@@ -150,8 +162,8 @@
     {
       "id": "r2DIzSGYwjjiqgY1ZiG2s",
       "type": "rectangle",
-      "x": 1132.0488105115294,
-      "y": 164.53125,
+      "x": 1329.1140207509745,
+      "y": 159.24714092113123,
       "width": 274.9140625,
       "height": 237.4140625,
       "angle": 0,
@@ -169,24 +181,28 @@
         "type": 3
       },
       "seed": 489511716,
-      "version": 219,
-      "versionNonce": 1046457500,
+      "version": 300,
+      "versionNonce": 1084929526,
       "isDeleted": false,
       "boundElements": [
         {
           "type": "text",
           "id": "FN-_h9M9pcpO8Ed35d7Lf"
+        },
+        {
+          "id": "MpNYOc75yEZamzuYoxTGR",
+          "type": "arrow"
         }
       ],
-      "updated": 1790637701746,
+      "updated": 1790639699074,
       "link": null,
       "locked": false
     },
     {
       "id": "FN-_h9M9pcpO8Ed35d7Lf",
       "type": "text",
-      "x": 1225.255879908502,
-      "y": 169.53125,
+      "x": 1422.3210901479472,
+      "y": 164.24714092113123,
       "width": 88.49992370605469,
       "height": 25,
       "angle": 0,
@@ -202,11 +218,11 @@
       "index": "a3",
       "roundness": null,
       "seed": 908937764,
-      "version": 22,
-      "versionNonce": 2001895716,
+      "version": 102,
+      "versionNonce": 420251446,
       "isDeleted": false,
-      "boundElements": null,
-      "updated": 1790637717906,
+      "boundElements": [],
+      "updated": 1790639699074,
       "link": null,
       "locked": false,
       "text": "nflreadpy",
@@ -222,8 +238,8 @@
     {
       "id": "zLC1r7e-OFzUuv7LjFnhP",
       "type": "rectangle",
-      "x": 303.03568181464186,
-      "y": 488.2498641105813,
+      "x": 150.62561514023992,
+      "y": 498.8512461328307,
       "width": 251.9430390497397,
       "height": 135,
       "angle": 0,
@@ -241,8 +257,8 @@
         "type": 3
       },
       "seed": 344133028,
-      "version": 130,
-      "versionNonce": 1368838820,
+      "version": 208,
+      "versionNonce": 1082257130,
       "isDeleted": false,
       "boundElements": [
         {
@@ -250,15 +266,15 @@
           "id": "bp7DEmAJWEKtGxefOLbLB"
         }
       ],
-      "updated": 1790637820581,
+      "updated": 1790639707929,
       "link": null,
       "locked": false
     },
     {
       "id": "bp7DEmAJWEKtGxefOLbLB",
       "type": "text",
-      "x": 324.8572684781836,
-      "y": 493.2498641105813,
+      "x": 172.44720180378164,
+      "y": 503.8512461328307,
       "width": 208.29986572265625,
       "height": 125,
       "angle": 0,
@@ -274,11 +290,11 @@
       "index": "a5",
       "roundness": null,
       "seed": 768974884,
-      "version": 30,
-      "versionNonce": 386872476,
+      "version": 108,
+      "versionNonce": 1761116586,
       "isDeleted": false,
-      "boundElements": null,
-      "updated": 1790637827847,
+      "boundElements": [],
+      "updated": 1790639707929,
       "link": null,
       "locked": false,
       "text": "\"player\": \"Will Rogers\",\n\"position\": \"QB\",\n\"season\": 2024\n\n",
@@ -366,8 +382,8 @@
     {
       "id": "tYIx7kBTBU8fYDkTa6dOo",
       "type": "rectangle",
-      "x": 1133.7662353839778,
-      "y": 464.32140102929674,
+      "x": 1304.1234800699772,
+      "y": 449.0549687323975,
       "width": 371.32290765759393,
       "height": 160,
       "angle": 0,
@@ -385,8 +401,8 @@
         "type": 3
       },
       "seed": 579300380,
-      "version": 422,
-      "versionNonce": 355339292,
+      "version": 467,
+      "versionNonce": 440638122,
       "isDeleted": false,
       "boundElements": [
         {
@@ -394,15 +410,15 @@
           "id": "DsRo1dsvhZsuyY4F78iIM"
         }
       ],
-      "updated": 1790638009177,
+      "updated": 1790639697066,
       "link": null,
       "locked": false
     },
     {
       "id": "DsRo1dsvhZsuyY4F78iIM",
       "type": "text",
-      "x": 1144.017807620978,
-      "y": 481.82140102929674,
+      "x": 1314.3750523069773,
+      "y": 466.5549687323975,
       "width": 350.81976318359375,
       "height": 125,
       "angle": 0,
@@ -418,11 +434,11 @@
       "index": "aA",
       "roundness": null,
       "seed": 1736149148,
-      "version": 351,
-      "versionNonce": 206448796,
+      "version": 396,
+      "versionNonce": 1024374122,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1790638009177,
+      "updated": 1790639697066,
       "link": null,
       "locked": false,
       "text": "\"player_display_name\" : \"Tom Brady\"\n\"position\": \"QB\",\n\"season\": 2024\n\n",
@@ -438,10 +454,10 @@
     {
       "id": "B8zRUVFWnVVtiFe3pYg9y",
       "type": "text",
-      "x": 147.17650967197437,
-      "y": 744.7592512241523,
-      "width": 1484.89892578125,
-      "height": 175,
+      "x": 306.8646795059591,
+      "y": 744.5986558234388,
+      "width": 1165.17919921875,
+      "height": 200,
       "angle": 0,
       "strokeColor": "#1e1e1e",
       "backgroundColor": "transparent",
@@ -455,20 +471,212 @@
       "index": "aB",
       "roundness": null,
       "seed": 1578397604,
-      "version": 537,
-      "versionNonce": 1800162084,
+      "version": 627,
+      "versionNonce": 1327009066,
       "isDeleted": false,
-      "boundElements": null,
-      "updated": 1790638268397,
+      "boundElements": [],
+      "updated": 1790640291091,
       "link": null,
       "locked": false,
-      "text": "Data Cleansing\n\nModule Name: utils_data_cleansing\n\nMethods:\ndef clean_transform_positions():  Standardize various Quarterback, qb, QB to be QB, Running Back to RB, etc.  Leverage position_map.json to do this\n",
+      "text": "Data Cleansing\n\nModule Name: utils_data_cleansing\n\nMethods:\ndef clean_transform_positions(df:pd.DataFrame, position_map: Mapping[str,str], column:str) -> pd.DataFrame:\n  Standardize various Quarterback, qb, QB to be QB, Running Back to RB, etc.  Leverage position_map.json to do this\n",
       "fontSize": 20,
       "fontFamily": 5,
       "textAlign": "center",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "Data Cleansing\n\nModule Name: utils_data_cleansing\n\nMethods:\ndef clean_transform_positions():  Standardize various Quarterback, qb, QB to be QB, Running Back to RB, etc.  Leverage position_map.json to do this\n",
+      "originalText": "Data Cleansing\n\nModule Name: utils_data_cleansing\n\nMethods:\ndef clean_transform_positions(df:pd.DataFrame, position_map: Mapping[str,str], column:str) -> pd.DataFrame:\n  Standardize various Quarterback, qb, QB to be QB, Running Back to RB, etc.  Leverage position_map.json to do this\n",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "7vPI80qjAtSQDwg3aPJpc",
+      "type": "arrow",
+      "x": 406.0818696225721,
+      "y": 284.36057484236574,
+      "width": 324.56609652495393,
+      "height": 0.2571749661879039,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "aC",
+      "roundness": {
+        "type": 2
+      },
+      "seed": 1267980790,
+      "version": 142,
+      "versionNonce": 1575358314,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "wGhhQGOLbF8aFnQy789tR"
+        }
+      ],
+      "updated": 1790639719837,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          324.56609652495393,
+          -0.2571749661879039
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "OXxjY2n9qOKVSPKEyGXCx",
+        "focus": -0.03352838649281738,
+        "gap": 1
+      },
+      "endBinding": {
+        "elementId": "W9ezVP5C4IC1iJwxLSYmV",
+        "focus": 0.015525520691000216,
+        "gap": 1.7465651024739373
+      },
+      "startArrowhead": "arrow",
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "wGhhQGOLbF8aFnQy789tR",
+      "type": "text",
+      "x": 481.5049859392483,
+      "y": 259.2319873592718,
+      "width": 173.71986389160156,
+      "height": 50,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "aCV",
+      "roundness": null,
+      "seed": 1328928118,
+      "version": 29,
+      "versionNonce": 1845946806,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1790639717503,
+      "link": null,
+      "locked": false,
+      "text": "position - player -\nseason",
+      "fontSize": 20,
+      "fontFamily": 5,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "7vPI80qjAtSQDwg3aPJpc",
+      "originalText": "position - player - season",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "MpNYOc75yEZamzuYoxTGR",
+      "type": "arrow",
+      "x": 1008.9322423483446,
+      "y": 290.0557761965744,
+      "width": 317.8820154692129,
+      "height": 0.6082758756731437,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "aD",
+      "roundness": {
+        "type": 2
+      },
+      "seed": 1123938730,
+      "version": 180,
+      "versionNonce": 966270006,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "S7jbbmmFC5qIVbo1abIzt"
+        }
+      ],
+      "updated": 1790639727666,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          317.8820154692129,
+          -0.6082758756731437
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "W9ezVP5C4IC1iJwxLSYmV",
+        "focus": 0.038743821867036135,
+        "gap": 2.147530931420988
+      },
+      "endBinding": {
+        "elementId": "r2DIzSGYwjjiqgY1ZiG2s",
+        "focus": -0.09520977147765917,
+        "gap": 3.04308756182445
+      },
+      "startArrowhead": "arrow",
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "S7jbbmmFC5qIVbo1abIzt",
+      "type": "text",
+      "x": 1081.0133181371502,
+      "y": 264.75163825873784,
+      "width": 173.71986389160156,
+      "height": 50,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "aE",
+      "roundness": null,
+      "seed": 1959050474,
+      "version": 29,
+      "versionNonce": 1283394730,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1790639726517,
+      "link": null,
+      "locked": false,
+      "text": "position - player -\nseason",
+      "fontSize": 20,
+      "fontFamily": 5,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "MpNYOc75yEZamzuYoxTGR",
+      "originalText": "position - player - season",
       "autoResize": true,
       "lineHeight": 1.25
     }
