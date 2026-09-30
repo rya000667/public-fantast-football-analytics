@@ -51,7 +51,7 @@ def create_college_stats_dataframe(dataframe_dict: dict[str, pd.DataFrame]) ->pd
 
     return all_stats
     
-def process_college_features(college_df:pd.DataFrame, features_list:list['str']=['receiving', 'passing', 'rushing', 'fumbles', 'kicking']) -> pd.DataFrame:
+def process_college_stats_features(college_df:pd.DataFrame, features_list:list['str']=['receiving', 'passing', 'rushing', 'fumbles', 'kicking']) -> pd.DataFrame:
     """
     """
     all_stats_filtered = college_df[college_df['category'].isin(features_list)]
@@ -91,16 +91,6 @@ def process_college_draft_data(draft_df:pd.DataFrame, features_list:list['str']=
     return all_draft_filtered
 
 
-def aggregate_stats_df(stats_df:pd.DataFrame) -> pd.DataFrame:
-    """
-    Combine the college stats and draft dataframes on the specified column
-    """
-    all_stats_filtered_pivot = stats_df.pivot(index=['season','playerId','player','position','team','conference','category'], columns='statType', values='stat').reset_index()
-    all_stats_filtered_pivot.head()
-
-    return all_stats_filtered_pivot
-
-
 def normalize_college_stats_df_cols(college_stats_df:pd.DataFrame) -> pd.DataFrame:
     """
     This will normalize the college stats dataframe leveraging the mapping created in mappings/college_football_stats_mapping.csv.  
@@ -120,3 +110,15 @@ def normalize_college_stats_df_cols(college_stats_df:pd.DataFrame) -> pd.DataFra
     })
 
     return normalized_df
+
+
+
+def aggregate_stats_df(normalized_stats_df:pd.DataFrame) -> pd.DataFrame:
+    """
+    Combine the college stats and draft dataframes on the specified column
+    BE SURE TO DO THIS ON THE NORMALIZED STATS DF SO normalize_college_stats_df_cols must be called first
+    """
+    normalized_stats_df_pivot = normalized_stats_df.pivot(index=['season','playerId','player','position','team','conference'], columns='norm_col_name', values='stat').reset_index()
+    normalized_stats_df_pivot.head()
+
+    return normalized_stats_df_pivot
