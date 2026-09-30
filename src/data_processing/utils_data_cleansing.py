@@ -122,3 +122,21 @@ def aggregate_stats_df(normalized_stats_df:pd.DataFrame) -> pd.DataFrame:
     normalized_stats_df_pivot.head()
 
     return normalized_stats_df_pivot
+
+
+def normalize_nflreadpy_df_cols(nflreadpy_df:pd.DataFrame) -> pd.DataFrame:
+    """
+    """
+    nflreadpy_df = nflreadpy_df.rename(columns={
+        'player_display_name': 'player'
+    })
+
+    return nflreadpy_df
+
+
+def combine_college_stats_and_nflreadpy_data(nflreadpy_df:pd.DataFrame, college_stats_df:pd.DataFrame,
+                                           on_columns:list[str]=['position', 'player', 'season']) -> pd.DataFrame:
+    """
+    """
+    total_df = pd.concat([nflreadpy_df, college_stats_df], ignore_index=True, sort=False)
+    return total_df
