@@ -101,86 +101,22 @@ def aggregate_stats_df(stats_df:pd.DataFrame) -> pd.DataFrame:
     return all_stats_filtered_pivot
 
 
+def normalize_college_stats_df_cols(college_stats_df:pd.DataFrame) -> pd.DataFrame:
+    """
+    This will normalize the college stats dataframe leveraging the mapping created in mappings/college_football_stats_mapping.csv.  
+    This will allow us to have consistent column names across the college and NFL dataframes.
+    """
+    # create df from mapping csv
+    mapping_df = pd.read_csv('mappings/college_football_stats_mapping.csv')
 
-"""
-College Stats Columns:
-['season', 'playerId', 'player', 'position', 'team', 'conference',
-       'category', 'ATT', 'AVG', 'CAR', 'COMPLETIONS', 'FGA', 'FGM', 'FUM',
-       'INT', 'In 20', 'LONG', 'LOST', 'NO', 'PCT', 'PD', 'PTS', 'QB HUR',
-       'REC', 'SACKS', 'SOLO', 'TB', 'TD', 'TFL', 'TOT', 'XPA', 'XPM', 'YDS',
-       'YPA', 'YPC', 'YPP', 'YPR']
+    # Merge the mapping_df with college_stats_df on the 'category' column
+    normalized_df = college_stats_df.merge(mapping_df, on=['category','statType'], how='left')
 
-college_stats_cols_map:
-{
-    'season': 'season',
-    'playerId', 'college_player_id',
-    player': 'player_name',
-    'position': 'position',
-    'team': 'college_team',
-    'conference': 'college_conference',
-    'category': 'stat_category',
-    'ATT': 'attempts',
-    'AVG': 'FIGURE OUT WHAT THIS MEANS',
-    'CAR': 'carries',
-    'COMPLETIONS': 'completions',
-    'FGA': 'field_goal_attempts',
-    'FGM': 'field_goals_made',
-    'FUM': 'fumbles',
-    'INT': 'interceptions',
-    'In 20': 'FIGURE OUT WHAT THIS MEANS',
-    'LONG': 'FIGURE OUT WHAT THIS MEANS',
-    'LOST': 'fumbles_lost',
-    'NO': 'FIGURE OUT WHAT THIS MEANS',
-    'PCT': 'DIFFERENT MEANING FOR DIFFERENT POSITIONS',
-    ',
+    # Drop the category column and rename the new columns
+    normalized_df = normalized_df.drop(columns=['category'])
+    normalized_df = normalized_df.rename(columns={
+        'statType': 'stat_type',
+        'norm_col_name': 'norm_col_name'
+    })
 
-}
-       
-
-nflreadpy columns:
-    'player_id',
-    'player_name',
-    'player_display_name',
-    'position',
-    'position_group',
-    'headshot_url',
-    'season',
-    'week',
-    'season_type',
-    'game_id',
-    'team',
-    'opponent_team'
-
-    'completions',
-    'attempts',
-    'passing_yards',
-    'passing_tds',
-    'passing_interceptions',
-    'sacks_suffered',
-    'sack_yards_lost',
-    'sack_fumbles',
-    'sack_fumbles_lost',
-    'passing_air_yards',
-    'passing_yards_after_catch',
-    'passing_first_downs',
-    'passing_epa',
-    'passing_cpoe',
-    'passing_2pt_conversions',
-    'pacr',
-    'passing_10',
-    'passing_16',
-    'passing_20',
-    'passing_40',
-    'carries',
-    'rushing_yards',
-    'rushing_tds',
-    'rushing_fumbles',
-    'rushing_fumbles_lost',
-    'rushing_first_downs',
-    'rushing_epa',
-    'rushing_2pt_conversions',
-    'rushing_10',
-    'rushing_12',
-    'rushing_20',
-    'rushing_40'
-"""
+    return normalized_df
