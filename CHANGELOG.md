@@ -1,7 +1,7 @@
 # ChangeLog
 
 ## Features to Work (unreleased)
-- Creation of Join Key across nflreadpy data and api.collegefootballdata (fullname - year - position looks hopeful)
+- Normalization of columns between collegefootballdata and nflreadpy
 - Box plot
 - Violin Plot
 - Dendrogram
@@ -11,6 +11,11 @@
 - Clustering Analysis (low priority, achive all others before touching)
 
 ## Added
+#### General
+- Adjusted directory structure for ingestion and preprocessing modules
+- Created utils_data_cleansing for merging across datasets and wraping preprocessing steps into functions
+- Creation of Join Key across nflreadpy data and api.collegefootballdata (fullname - year - position looks hopeful)
+
 #### nflreadpy Features
 - Initial Ingestion of nflreadpy data
 - Team and Player DataFrames

@@ -13,8 +13,9 @@ H = {"Authorization": f"Bearer {api_key}"}
 Host = "https://api.collegefootballdata.com"
 
 # Config File Save 
-OUTPUT_DIR = Path("college_data")
-OUTPUT_DIR.mkdir(exist_ok=True)
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+OUTPUT_DIR = PROJECT_ROOT / "data" / "college_data"
+OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 # Pull 2025-2026 draft picks and 2024-2025 college stats
 college_data = {}
