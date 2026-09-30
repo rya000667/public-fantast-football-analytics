@@ -99,3 +99,88 @@ def aggregate_stats_df(stats_df:pd.DataFrame) -> pd.DataFrame:
     all_stats_filtered_pivot.head()
 
     return all_stats_filtered_pivot
+
+
+
+"""
+College Stats Columns:
+['season', 'playerId', 'player', 'position', 'team', 'conference',
+       'category', 'ATT', 'AVG', 'CAR', 'COMPLETIONS', 'FGA', 'FGM', 'FUM',
+       'INT', 'In 20', 'LONG', 'LOST', 'NO', 'PCT', 'PD', 'PTS', 'QB HUR',
+       'REC', 'SACKS', 'SOLO', 'TB', 'TD', 'TFL', 'TOT', 'XPA', 'XPM', 'YDS',
+       'YPA', 'YPC', 'YPP', 'YPR']
+
+college_stats_cols_map:
+{
+    'season': 'season',
+    'playerId', 'college_player_id',
+    player': 'player_name',
+    'position': 'position',
+    'team': 'college_team',
+    'conference': 'college_conference',
+    'category': 'stat_category',
+    'ATT': 'attempts',
+    'AVG': 'FIGURE OUT WHAT THIS MEANS',
+    'CAR': 'carries',
+    'COMPLETIONS': 'completions',
+    'FGA': 'field_goal_attempts',
+    'FGM': 'field_goals_made',
+    'FUM': 'fumbles',
+    'INT': 'interceptions',
+    'In 20': 'FIGURE OUT WHAT THIS MEANS',
+    'LONG': 'FIGURE OUT WHAT THIS MEANS',
+    'LOST': 'fumbles_lost',
+    'NO': 'FIGURE OUT WHAT THIS MEANS',
+    'PCT': 'DIFFERENT MEANING FOR DIFFERENT POSITIONS',
+    ',
+
+}
+       
+
+nflreadpy columns:
+    'player_id',
+    'player_name',
+    'player_display_name',
+    'position',
+    'position_group',
+    'headshot_url',
+    'season',
+    'week',
+    'season_type',
+    'game_id',
+    'team',
+    'opponent_team'
+
+    'completions',
+    'attempts',
+    'passing_yards',
+    'passing_tds',
+    'passing_interceptions',
+    'sacks_suffered',
+    'sack_yards_lost',
+    'sack_fumbles',
+    'sack_fumbles_lost',
+    'passing_air_yards',
+    'passing_yards_after_catch',
+    'passing_first_downs',
+    'passing_epa',
+    'passing_cpoe',
+    'passing_2pt_conversions',
+    'pacr',
+    'passing_10',
+    'passing_16',
+    'passing_20',
+    'passing_40',
+    'carries',
+    'rushing_yards',
+    'rushing_tds',
+    'rushing_fumbles',
+    'rushing_fumbles_lost',
+    'rushing_first_downs',
+    'rushing_epa',
+    'rushing_2pt_conversions',
+    'rushing_10',
+    'rushing_12',
+    'rushing_20',
+    'rushing_40'
+"""
