@@ -33,6 +33,8 @@
 - Line Graphs
 - EDA of fantasy points data and later tie in to position players
 - Continued EDA across position players (RB, Receivers, Defense, others can be added as needed)
+- Added filters for season for all dashboards
+- Fixed Top 15 fantasy players by position to leverage season filter
 
 #### api.collegefootballdata Features
 - api.collegefootballdata.com ingestion
