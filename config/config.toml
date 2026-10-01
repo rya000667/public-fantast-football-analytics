@@ -1,4 +1,12 @@
-GLOBAL_MAX_DISPLAY_COLUMNS = None
+GLOBAL_SEASONS_LIST = [2018,2019,2020,2021,2022,2023,2024,2025,2026]
+cfb_relative_path = 'data/college_data'
+GLOBAL_MAX_DISPLAY_COLUMNS = 200
 GLOBAL_MAX_DISPLAY_ROWS = 200
 ALTAIR_DISPLAY_RENDERERS = 'html'
-GLOBAL_SEASONS_LIST = [2018,2019,2020,2021,2022,2023,2024,2025,2026]
+GLOBAL_WR_RECEPTIONS_MIN = 10
+
+
+def_pos_list = ['DE', 'DT', 'LB', 'CB', 'S', 'FS', 'MLB', 'NT', 'ILB', 'DL', 'DB', 'LB']
+special_teams_pos_list = ['K', 'P', 'LS']
+
+GLOBAL_POSITION_GROUPBY_COLS = ['player', 'position', 'season', 'data_source']

@@ -1,7 +1,4 @@
 from dotenv import load_dotenv
-import os
-import requests
-import json
 import pandas as pd
 import nflreadpy as nfl
 import altair as alt
@@ -11,23 +8,51 @@ import plotly.graph_objects as go
 import plotly.io as pio
 
 from src.data_processing import utils_data_cleansing as utils
+import tomllib
+from pathlib import Path
+
+
+CONFIG_PATH = Path('config/config.toml')
+
+with CONFIG_PATH.open('rb') as f:
+    config = tomllib.load(f)
+
+
+"""
+Global Dashboard Filters
+"""
+season_filter = alt.param(
+    name = 'selected_season',
+    value = 2024,
+    bind = alt.binding_select(
+        options = config['GLOBAL_SEASONS_LIST'],
+        name = 'Season'
+    )
+)
 
 """
 QB Functions
 """
-def qb_chart_top_fantasy_scorers(df, season = None, n = 15):
+
+def qb_chart_top_fantasy_scorers(df, n = 15):
     """Bar chart: top N QBs by total fantasy points (optionally filtered to a season)."""
-    data = df if season is None else df[df["season"] == season]
-    data = data.sort_values("fantasy_points", ascending=False).head(n)
-    title = f"Top {n} QBs by Fantasy Points" + (f" ({season})" if season else "")
+
+    title = f"Top {n} QBs by Fantasy Points"
+    
     return (
-        alt.Chart(data, title=title)
+        alt.Chart(df, title=title)
+        .transform_filter(alt.datum.season == season_filter)
+        .transform_window(
+            rank = "rank()",
+            sort = [alt.SortField("fantasy_points", order="descending")]
+        )
+        .transform_filter(alt.datum.rank <= n)
         .mark_bar(color="#2ca02c")
         .encode(
             x=alt.X("fantasy_points:Q", title="Fantasy Points"),
             y=alt.Y("player:N", sort="-x", title=None),
             tooltip=["player", "season", "attempts", "passing_tds", "fantasy_points"],
-        )
+        ).add_params(season_filter)
         .properties(width=600, height=alt.Step(20))
     )
 
@@ -43,7 +68,8 @@ def qb_chart_efficiency(df):
             size=alt.Size("attempts:Q", title="Attempts"),
             color=alt.Color("passing_interceptions:Q", title="INTs", scale=alt.Scale(scheme="reds")),
             tooltip=["player", "season", "passing_cpoe", "passing_epa", "passing_interceptions", "attempts"],
-        )
+        ).add_params(season_filter)
+         .transform_filter(alt.datum.season == season_filter)
         .properties(width=600, height=400)
         .interactive("pan_zoom_efficiency")
     )
@@ -59,7 +85,8 @@ def qb_chart_dual_threat(df):
             y=alt.Y("rushing_yards:Q", title="Rushing Yards"),
             size=alt.Size("fantasy_points:Q", title="Fantasy Points"),
             tooltip=["player", "season", "passing_yards", "rushing_yards", "rushing_tds", "fantasy_points"],
-        )
+        ).add_params(season_filter)
+         .transform_filter(alt.datum.season == season_filter)
         .properties(width=600, height=400)
         .interactive("pan_zoom_dual_threat")
     )
@@ -91,7 +118,8 @@ def qb_chart_sack_risk(df):
             y=alt.Y("sacks_suffered:Q", title="Sacks Suffered"),
             color=alt.Color("passing_epa:Q", title="Passing EPA", scale=alt.Scale(scheme="redblue", domainMid=0)),
             tooltip=["player", "season", "attempts", "sacks_suffered", "sack_yards_lost", "passing_epa"],
-        )
+        ).add_params(season_filter)
+         .transform_filter(alt.datum.season == season_filter)
         .properties(width=600, height=350)
     )
 
@@ -105,23 +133,34 @@ def qb_chart_td_int_ratio(df):
             x=alt.X("passing_interceptions:Q", title="Interceptions"),
             y=alt.Y("passing_tds:Q", title="Passing TDs"),
             tooltip=["player", "season", "passing_tds", "passing_interceptions", "completion_percentage"],
-        )
+        ).add_params(season_filter)
+         .transform_filter(alt.datum.season == season_filter)
         .properties(width=600, height=350)
     )
 
-def rb_chart_top_rushers(df, season = None, n = 15):
+"""
+RB Functions
+"""
+
+def rb_chart_top_rushers(df, n = 15):
     """Bar chart: top N RBs by rushing yards (optionally filtered to a season)."""
-    data = df if season is None else df[df["season"] == season]
-    data = data.sort_values("rushing_yards", ascending=False).head(n)
-    title = f"Top {n} RBs by Rushing Yards" + (f" ({season})" if season else "")
+
+    title = f"Top {n} RBs by Rushing Yards"
+
     return (
-        alt.Chart(data, title=title)
+        alt.Chart(df, title=title)
+        .transform_filter(alt.datum.season == season_filter)
+        .transform_window(
+            rank = "rank()",
+            sort = [alt.SortField("fantasy_points", order="descending")]
+        )
+        .transform_filter(alt.datum.rank <= n)
         .mark_bar(color="#1f77b4")
         .encode(
             x=alt.X("rushing_yards:Q", title="Rushing Yards"),
             y=alt.Y("player:N", sort="-x", title=None),
             tooltip=["player", "season", "carries", "rushing_yards", "rushing_tds"],
-        )
+        ).add_params(season_filter)
         .properties(width=600, height=alt.Step(20))
     )
 
@@ -137,7 +176,8 @@ def rb_chart_volume_vs_efficiency(df):
             size=alt.Size("rushing_tds:Q", title="Rushing TDs"),
             color=alt.Color("rushing_epa:Q", title="Rushing EPA", scale=alt.Scale(scheme="redblue", domainMid=0)),
             tooltip=["player", "season", "carries", "rush_yards_per_carry", "rushing_tds", "rushing_epa"],
-        )
+        ).add_params(season_filter)
+         .transform_filter(alt.datum.season == season_filter)
         .properties(width=600, height=400)
         .interactive("pan_zoom_efficiency")
     )
@@ -153,7 +193,8 @@ def rb_chart_receiving_involvement(df: pd.DataFrame):
             y=alt.Y("receiving_yards:Q", title="Receiving Yards"),
             color=alt.Color("racr:Q", title="RACR", scale=alt.Scale(scheme="viridis")),
             tooltip=["player", "season", "targets", "receptions", "receiving_yards", "target_share", "racr"],
-        )
+        ).add_params(season_filter)
+         .transform_filter(alt.datum.season == season_filter)
         .properties(width=600, height=400)
         .interactive("pan_zoom_receiving")
     )
@@ -187,7 +228,8 @@ def rb_chart_fumble_risk(df):
             x=alt.X("touches:Q", title="Total Touches"),
             y=alt.Y("fumbles_lost_total:Q", title="Fumbles Lost"),
             tooltip=["player", "season", "touches", "fumbles_lost_total"],
-        )
+        ).add_params(season_filter)
+         .transform_filter(alt.datum.season == season_filter)
         .properties(width=600, height=350)
     )
 
@@ -196,20 +238,25 @@ def rb_chart_fumble_risk(df):
 WR Functions
 """
 WR_COLOR = "#1f77b4"
-def wr_chart_top_fantasy_scorers(df: pd.DataFrame, season: int | None = None, n: int = 15) -> alt.Chart:
+def wr_chart_top_fantasy_scorers(df: pd.DataFrame, n: int = 15) -> alt.Chart:
     """Bar chart: top N WRs by total fantasy points."""
-    data = df if season is None else df[df["season"] == season]
-    data = data.sort_values("fantasy_points", ascending=False).head(n)
-    title = f"Top {n} WRs by Fantasy Points" + (f" ({season})" if season else "")
+
+    title = f"Top {n} WRs by Fantasy Points"
     return (
-        alt.Chart(data, title=title)
+        alt.Chart(df, title=title)
+        .transform_filter(alt.datum.season == season_filter)
+        .transform_window(
+            rank = "rank()",
+            sort = [alt.SortField("fantasy_points", order="descending")]
+        )
+        .transform_filter(alt.datum.rank <= n)
         .mark_bar(color=WR_COLOR)
         .encode(
             x=alt.X("fantasy_points:Q", title="Fantasy Points"),
             y=alt.Y("player:N", sort="-x", title=None),
             tooltip=["player", "season", "receptions", "receiving_yards",
                      "receiving_tds", "fantasy_points"],
-        )
+        ).add_params(season_filter)
         .properties(width=600, height=alt.Step(20))
     )
 
@@ -240,7 +287,8 @@ def wr_chart_usage_vs_production(df: pd.DataFrame) -> alt.Chart:
             y=alt.Y("receiving_yards:Q", title="Receiving Yards"),
             size=alt.Size("receiving_tds:Q", title="Receiving TDs"),
             tooltip=["player", "season", "target_share", "receiving_yards", "receiving_tds"],
-        )
+        ).add_params(season_filter)
+         .transform_filter(alt.datum.season == season_filter)
         .properties(width=600, height=400)
         .interactive("pan_zoom_usage")
     )
@@ -256,7 +304,8 @@ def wr_chart_air_yards_efficiency(df: pd.DataFrame) -> alt.Chart:
             y=alt.Y("target_share:Q", title="Target Share", axis=alt.Axis(format="%")),
             color=alt.Color("racr:Q", title="RACR", scale=alt.Scale(scheme="viridis")),
             tooltip=["player", "season", "air_yards_share", "target_share", "racr"],
-        )
+        ).add_params(season_filter)
+         .transform_filter(alt.datum.season == season_filter)
         .properties(width=600, height=400)
         .interactive("pan_zoom_air")
     )
@@ -271,7 +320,8 @@ def wr_chart_explosiveness(df: pd.DataFrame) -> alt.Chart:
             x=alt.X("rec_yards_per_catch:Q", title="Yards per Catch"),
             y=alt.Y("receiving_20:Q", title="20+ Yard Receptions"),
             tooltip=["player", "season", "rec_yards_per_catch", "receiving_20", "receiving_40"],
-        )
+        ).add_params(season_filter)
+         .transform_filter(alt.datum.season == season_filter)
         .properties(width=600, height=350)
     )
 
@@ -284,7 +334,8 @@ def wr_chart_fantasy_distribution(df: pd.DataFrame) -> alt.Chart:
         .encode(
             x=alt.X("avg_fantasy_points:Q", bin=alt.Bin(maxbins=20), title="Avg Fantasy Pts / Game"),
             y=alt.Y("count()", title="Player-Seasons"),
-        )
+        ).add_params(season_filter)
+         .transform_filter(alt.datum.season == season_filter)
         .properties(width=600, height=350)
     )
 
@@ -293,20 +344,26 @@ def wr_chart_fantasy_distribution(df: pd.DataFrame) -> alt.Chart:
 TE Functions
 """
 TE_COLOR = "#ff7f0e"
-def te_chart_top_fantasy_scorers(df: pd.DataFrame, season: int | None = None, n: int = 15) -> alt.Chart:
+def te_chart_top_fantasy_scorers(df: pd.DataFrame, n: int = 15) -> alt.Chart:
     """Bar chart: top N TEs by total fantasy points."""
-    data = df if season is None else df[df["season"] == season]
-    data = data.sort_values("fantasy_points", ascending=False).head(n)
-    title = f"Top {n} TEs by Fantasy Points" + (f" ({season})" if season else "")
+
+    title = f"Top {n} TEs by Fantasy Points"
+
     return (
-        alt.Chart(data, title=title)
+        alt.Chart(df, title=title)
+        .transform_filter(alt.datum.season == season_filter)
+        .transform_window(
+            rank = "rank()",
+            sort = [alt.SortField("fantasy_points", order="descending")]
+        )
+        .transform_filter(alt.datum.rank <= n)
         .mark_bar(color=TE_COLOR)
         .encode(
             x=alt.X("fantasy_points:Q", title="Fantasy Points"),
             y=alt.Y("player:N", sort="-x", title=None),
             tooltip=["player", "season", "receptions", "receiving_yards",
                      "receiving_tds", "fantasy_points"],
-        )
+        ).add_params(season_filter)
         .properties(width=600, height=alt.Step(20))
     )
 
@@ -337,7 +394,8 @@ def te_chart_usage_vs_production(df: pd.DataFrame) -> alt.Chart:
             y=alt.Y("receiving_yards:Q", title="Receiving Yards"),
             size=alt.Size("receiving_tds:Q", title="Receiving TDs"),
             tooltip=["player", "season", "target_share", "receiving_yards", "receiving_tds"],
-        )
+        ).add_params(season_filter)
+         .transform_filter(alt.datum.season == season_filter)
         .properties(width=600, height=400)
         .interactive("pan_zoom_usage")
     )
@@ -353,7 +411,8 @@ def te_chart_air_yards_efficiency(df: pd.DataFrame) -> alt.Chart:
             y=alt.Y("target_share:Q", title="Target Share", axis=alt.Axis(format="%")),
             color=alt.Color("racr:Q", title="RACR", scale=alt.Scale(scheme="viridis")),
             tooltip=["player", "season", "air_yards_share", "target_share", "racr"],
-        )
+        ).add_params(season_filter)
+         .transform_filter(alt.datum.season == season_filter)
         .properties(width=600, height=400)
         .interactive("pan_zoom_air")
     )
@@ -368,7 +427,8 @@ def te_chart_explosiveness(df: pd.DataFrame) -> alt.Chart:
             x=alt.X("rec_yards_per_catch:Q", title="Yards per Catch"),
             y=alt.Y("receiving_10:Q", title="10+ Yard Receptions"),
             tooltip=["player", "season", "rec_yards_per_catch", "receiving_10", "receiving_40"],
-        )
+        ).add_params(season_filter)
+         .transform_filter(alt.datum.season == season_filter)
         .properties(width=600, height=350)
     )
 
@@ -381,14 +441,15 @@ def te_chart_fantasy_distribution(df: pd.DataFrame) -> alt.Chart:
         .encode(
             x=alt.X("avg_fantasy_points:Q", bin=alt.Bin(maxbins=20), title="Avg Fantasy Pts / Game"),
             y=alt.Y("count()", title="Player-Seasons"),
-        )
+        ).add_params(season_filter)
+         .transform_filter(alt.datum.season == season_filter)
         .properties(width=600, height=350)
     )
 
 """
 Dashboard Functions
 """
-def build_qb_dashboard(df):
+def build_qb_dashboard(df,):
     row1 = alt.hconcat(qb_chart_top_fantasy_scorers(df), qb_chart_season_trend(df))
     row2 = alt.hconcat(qb_chart_efficiency(df), qb_chart_dual_threat(df))
     row3 = alt.hconcat(qb_chart_sack_risk(df), qb_chart_td_int_ratio(df))
