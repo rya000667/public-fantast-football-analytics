@@ -12,7 +12,14 @@ import tomllib
 from pathlib import Path
 
 
-CONFIG_PATH = Path('config/config.toml')
+# Resolve from this file's location so imports work from any working directory
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+CONFIG_PATH = PROJECT_ROOT / 'config' / 'config.toml'
+
+# Adding consistent colors to use for each posistion in visualizations
+POSITION_COLORS = {'QB': '#2ca02c', 'RB': '#d62728', 'WR': '#1f77b4', 'TE': '#ff7f0e'}
+POSITION_COLOR_SCALE = alt.Scale(domain=list(POSITION_COLORS), range=list(POSITION_COLORS.values()))
+
 
 with CONFIG_PATH.open('rb') as f:
     config = tomllib.load(f)
@@ -446,6 +453,131 @@ def te_chart_fantasy_distribution(df: pd.DataFrame) -> alt.Chart:
         .properties(width=600, height=350)
     )
 
+
+
+def chart_fantasy_distribution(df: pd.DataFrame) -> alt.Chart:
+    """Histogram: distribution of avg fantasy points per game."""
+    return (
+        alt.Chart(df, title="Distribution of Avg Fantasy Points per Game")
+        .mark_bar(color=TE_COLOR)
+        .encode(
+            x=alt.X("avg_fantasy_points:Q", bin=alt.Bin(maxbins=20), title="Avg Fantasy Pts / Game"),
+            y=alt.Y("count()", title="Player-Seasons"),
+        ).add_params(season_filter)
+         .transform_filter(alt.datum.season == season_filter)
+        .properties(width=600, height=350)
+    )
+
+## All-In Functions
+
+def targeted_heatmap(df, targets, title, exclude=(), min_corr=0.1):
+    """Correlation of every numeric column with each target, shown side by side."""
+    num = df.select_dtypes(include='number')
+
+    data = (
+        num.drop(columns=[*targets, *exclude], errors='ignore')
+        .apply(lambda col: num[targets].corrwith(col))   # rows: stats, columns: targets
+        .T
+        .dropna(how='all')
+    )
+
+    # keep stats where at least one target has |r| >= min_corr
+    data = data[(data.abs() >= min_corr).any(axis=1)]
+
+    data = (
+        data.rename_axis('stat')
+        .reset_index()
+        .melt(id_vars='stat', var_name='target', value_name='correlation')
+    )
+
+    # order stats by correlation with the first target, strongest first
+    order = (
+        data[data['target'] == targets[0]]
+        .sort_values('correlation', ascending=False)['stat']
+        .tolist()
+    )
+
+    return alt.Chart(data, title=title).mark_rect().encode(
+        x=alt.X('target:N', title=None, sort=targets),
+        y=alt.Y('stat:N', title=None, sort=order),
+        color=alt.Color('correlation:Q', scale=alt.Scale(scheme='redblue', domain=[-1, 1], reverse=True)),
+        tooltip=['stat', 'target', alt.Tooltip('correlation:Q', format='.2f')],
+    ).properties(width=80 * len(targets), height=600)
+
+
+
+def corr_bar_chart(df, target, title, exclude=(), min_corr=0.3):
+    num = df.select_dtypes(include='number')
+    data = (
+        num.drop(columns=[target, *exclude], errors='ignore')
+        .corrwith(num[target])
+        .dropna()
+        .rename('correlation')
+        .rename_axis('stat')
+        .reset_index()
+    )
+    data = data[data['correlation'].abs() >= min_corr]
+
+    bars = alt.Chart(data, title=title).mark_bar().encode(
+        x=alt.X('correlation:Q', scale=alt.Scale(domain=[-1, 1]), title='Correlation (r)'),
+        y=alt.Y('stat:N', sort='-x', title=None),
+        color=alt.condition('datum.correlation > 0', alt.value('#2b6cb0'), alt.value('#c53030')),
+        tooltip=['stat', alt.Tooltip('correlation:Q', format='.2f')],
+    )
+    labels = bars.mark_text(align='left', dx=3).encode(
+        text=alt.Text('correlation:Q', format='.2f'), color=alt.value('black')
+    )
+    return (bars + labels).properties(width=400, height=alt.Step(18))
+
+
+
+def chart_fantasy_distribution(df: pd.DataFrame, position: str | None = None,
+                               value_col: str = 'avg_fantasy_points', maxbins: int = 20) -> alt.Chart:
+    """Histogram: distribution of avg fantasy points per game for one position, or all positions stacked if None."""
+    data = df[df['position'].isin(POSITION_COLORS)] if position is None else df[df['position'] == position]
+    label = position or 'All Positions'
+
+    return (
+        alt.Chart(data, title=f"Distribution of Avg Fantasy Points per Game: {label}")
+        .mark_bar()
+        .encode(
+            x=alt.X(f"{value_col}:Q", bin=alt.Bin(maxbins=maxbins), title="Avg Fantasy Pts / Game"),
+            y=alt.Y("count()", title="Player-Seasons"),
+            color=alt.Color('position:N', scale=POSITION_COLOR_SCALE, sort=list(POSITION_COLORS),
+                            legend=None if position else alt.Legend(title='Position')),
+            order=alt.Order('position_order:Q'),
+            tooltip=['position', alt.Tooltip('count()', title='Player-Seasons')],
+        )
+        .transform_calculate(position_order=f"indexof({list(POSITION_COLORS)}, datum.position)")
+        .add_params(season_filter)
+        .transform_filter(alt.datum.season == season_filter)
+        .properties(width=600, height=350)
+    )
+
+
+def chart_fantasy_distribution_by_position(df: pd.DataFrame, positions: list[str] = list(POSITION_COLORS),
+                                           value_col: str = 'avg_fantasy_points', maxbins: int = 20) -> alt.FacetChart:
+    """Histograms of avg fantasy points per game, one panel per position, on a shared x-axis."""
+    return (
+        alt.Chart(df[df['position'].isin(positions)])
+        .mark_bar()
+        .encode(
+            x=alt.X(f"{value_col}:Q", bin=alt.Bin(maxbins=maxbins), title="Avg Fantasy Pts / Game"),
+            y=alt.Y("count()", title="Player-Seasons"),
+            color=alt.Color('position:N', scale=POSITION_COLOR_SCALE, legend=None),
+            tooltip=['position', alt.Tooltip('count()', title='Player-Seasons')],
+        )
+        .add_params(season_filter)
+        .transform_filter(alt.datum.season == season_filter)
+        .properties(width=600, height=120)
+        .facet(row=alt.Row('position:N', sort=positions, title=None))
+        .resolve_scale(y='independent')
+        .properties(title="Distribution of Avg Fantasy Points per Game by Position")
+    )
+
+
+
+
 """
 Dashboard Functions
 """
@@ -480,3 +612,5 @@ def build_te_dashboard(df: pd.DataFrame) -> alt.VConcatChart:
     return alt.vconcat(row1, row2, row3).properties(
         title=alt.TitleParams("TE Fantasy Football Dashboard", fontSize=20)
     )
+
+

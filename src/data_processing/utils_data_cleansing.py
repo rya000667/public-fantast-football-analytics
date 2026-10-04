@@ -6,6 +6,9 @@ import pandas as pd
 from pathlib import Path
 import json
 
+# Resolve from this file's location so paths work from any working directory
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+
 def clean_transform_positions(df:pd.DataFrame, position_map: Mapping[str,str], column:str) -> pd.DataFrame:
     """
     Standardize various Quarterback, qb, QB to be QB, Running Back to RB, etc.  Leverage position_map.json to do this
@@ -18,8 +21,7 @@ def load_college_data(relative_path:str='src/data_ingestion/college_data') ->dic
     """
     Load college data from JSON files and return a dictionary of DataFrames
     """
-    BASE_DIR = Path.cwd()
-    DATA_DIR = BASE_DIR / relative_path
+    DATA_DIR = PROJECT_ROOT / relative_path
 
     # Hold DataFrames
     dfs = {}
@@ -97,7 +99,7 @@ def normalize_college_stats_df_cols(college_stats_df:pd.DataFrame) -> pd.DataFra
     This will allow us to have consistent column names across the college and NFL dataframes.
     """
     # create df from mapping csv
-    mapping_df = pd.read_csv('mappings/college_football_stats_mapping.csv')
+    mapping_df = pd.read_csv(PROJECT_ROOT / 'mappings' / 'college_football_stats_mapping.csv')
 
     # Merge the mapping_df with college_stats_df on the 'category' column
     normalized_df = college_stats_df.merge(mapping_df, on=['category','statType'], how='left')
