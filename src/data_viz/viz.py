@@ -454,6 +454,8 @@ def te_chart_fantasy_distribution(df: pd.DataFrame) -> alt.Chart:
     )
 
 
+## All-In Functions
+
 
 def chart_fantasy_distribution(df: pd.DataFrame) -> alt.Chart:
     """Histogram: distribution of avg fantasy points per game."""
@@ -467,8 +469,53 @@ def chart_fantasy_distribution(df: pd.DataFrame) -> alt.Chart:
          .transform_filter(alt.datum.season == season_filter)
         .properties(width=600, height=350)
     )
+def chart_fantasy_distribution_by_position(df: pd.DataFrame, positions: list[str] = list(POSITION_COLORS),
+                                           value_col: str = 'avg_fantasy_points', maxbins: int = 30,
+                                           x_title: str = 'Avg Fantasy Pts / Game', y_title: str = 'Player-Seasons',
+                                           title: str = 'Distribution of Avg Fantasy Points per Game by Position'
+                                           ) -> alt.FacetChart:
+    """Histograms of a scoring column, one panel per position, on a shared x-axis."""
+    alt.data_transformers.disable_max_rows()
+    data = df.loc[df['position'].isin(positions), ['position', 'season', value_col]].dropna()
 
-## All-In Functions
+    return (
+        alt.Chart(data)
+        .mark_bar()
+        .encode(
+            x=alt.X(f"{value_col}:Q", bin=alt.Bin(maxbins=maxbins), title=x_title),
+            y=alt.Y("count()", title=y_title),
+            color=alt.Color('position:N', scale=POSITION_COLOR_SCALE, legend=None),
+            tooltip=['position', alt.Tooltip('count()', title=y_title)],
+        )
+        .add_params(season_filter)
+        .transform_filter(alt.datum.season == season_filter)
+        .properties(width=600, height=120)
+        .facet(row=alt.Row('position:N', sort=positions, title=None))
+        .resolve_scale(y='independent')
+        .properties(title=title)
+    )
+
+def chart_fantasy_boxplot_by_position(df: pd.DataFrame, positions: list[str] = list(POSITION_COLORS),
+                                      value_col: str = 'avg_fantasy_points',
+                                      x_title: str = 'Avg Fantasy Pts / Game',
+                                      title: str = 'Avg Fantasy Points per Game by Position') -> alt.Chart:
+    """Box-and-whisker plot of a scoring column, one box per position."""
+    alt.data_transformers.disable_max_rows()
+    data = df.loc[df['position'].isin(positions), ['position', 'season', value_col]].dropna()
+
+    return (
+        alt.Chart(data, title=title)
+        .mark_boxplot(extent=1.5, size=28, median={'color': 'white'}, outliers={'size': 8, 'opacity': 0.3})
+        .encode(
+            x=alt.X(f"{value_col}:Q", title=x_title),
+            y=alt.Y('position:N', sort=positions, title=None),
+            color=alt.Color('position:N', scale=POSITION_COLOR_SCALE, legend=None),
+        )
+        .add_params(season_filter)
+        .transform_filter(alt.datum.season == season_filter)
+        .properties(width=600, height=alt.Step(45))
+    )
+
 
 def targeted_heatmap(df, targets, title, exclude=(), min_corr=0.1):
     """Correlation of every numeric column with each target, shown side by side."""

@@ -37,10 +37,10 @@ offensive_aggregates = {
     'receptions': 'sum', 'targets': 'sum', 'receiving_yards': 'sum', 'receiving_tds': 'sum',
     'receiving_fumbles': 'sum', 'receiving_fumbles_lost': 'sum', 'receiving_air_yards': 'sum',
     'receiving_yards_after_catch': 'sum', 'receiving_first_downs': 'sum', 'receiving_epa': 'sum',
-    'receiving_2pt_conversions': 'sum', 'racr': 'mean', 'target_share': 'mean', 'air_yards_share': 'mean',
+    'receiving_2pt_conversions': 'sum', 'racr': 'mean', 'target_share': 'mean', 'air_yards_share': 'mean', 
 
-    # games played
-    'games_played_unit': 'sum',
+    # all 
+    'games_played_unit': 'sum'
 }
 
 offensive_positions = ['QB', 'RB', 'WR', 'TE'] 
