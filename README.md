@@ -17,6 +17,8 @@ cd public-fantast-football-analytics
 #### Setting up Local Development Environment
 In the root of the repo from above, we will setup a virtual environment.  There are many ways to do this, this approach will demonstrate using pythons built in venv module and assume that your operating system has python configured as 'python'.  Note there are other means to configure such as py3, python3, etc.  If that is the case, replace python below with what you have configured.  Also, we will name the local virtual environment .venv, feel free to replace with your preferred name.
 
+Note, this environment was built using python 3.14.7, so it is recommended to use that version or higher
+
 ```
 python -m venv .venv
 # to validate success, you should now see the command line as (.venv)
