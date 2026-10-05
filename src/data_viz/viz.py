@@ -99,11 +99,21 @@ def qb_chart_dual_threat(df):
     )
 
 
-def qb_chart_season_trend(df, players = None):
-    """Line chart: avg fantasy points/game across seasons for selected players (or all)."""
-    data = df if not players else df[df["player"].isin(players)]
+def qb_chart_season_trend(df, players=None, top_n=20):
+    """Line chart: avg fantasy points/game across seasons for selected players (or top N)."""
+    if players:
+        data = df[df["player"].isin(players)]
+    else:
+        top_players = (
+            df.groupby("player")["avg_fantasy_points"]
+            .mean()
+            .nlargest(top_n)
+            .index
+        )
+        data = df[df["player"].isin(top_players)]
+
     return (
-        alt.Chart(data, title="Avg Fantasy Points per Game by Season")
+        alt.Chart(data, title=f"Avg Fantasy Points per Game by Season")
         .mark_line(point=True)
         .encode(
             x=alt.X("season:O", title="Season"),
