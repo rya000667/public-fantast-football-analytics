@@ -27,6 +27,18 @@ python -m venv .venv
 pip -r requirements.txt
 ```
 
+### Code Formatting
+We used black for formatting and linting for this project.  This can be run on the src/ directory and the specific notebook files we created
+
+```
+# Run linting on src/
+black src/
+
+# Run linting on notebooks
+black expore-api-sports-notebook.ipynb
+black 'Fantasy Football Metrics Core Analysis.ipynb'
+```
+
 
 
 
