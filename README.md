@@ -41,5 +41,25 @@ black 'Fantasy Football Metrics Core Analysis.ipynb'
 
 
 
+### Creating PDF for Notebook
+For this, we created a narrative jupyter notebook that we converted to PDF and removed the input code cells for space.
+In addition to additional python modules like nbconvert being added to requirements.txt, we also had to intall an additional command line tool called pandoc that nbconvert called on.
+
+```
+# setup pandoc on mac
+brew install pandoc
+```
+
+```
+# Install Chromium for playwright
+playwright install chromium
+```
+
+#### Generate the PDF of the Notebook
+```
+jupyter nbconvert --to webpdf --no-input 'Fantasy Football Metrics Core Analysis.ipynb' --output-dir PDFs --output fantasy-football-narrative
+```
+
+
 
 
