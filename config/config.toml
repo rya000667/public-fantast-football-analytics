@@ -19,7 +19,7 @@ minimums = {attempts = 100}
 minimums = {carries = 50}
 
 [season_agg_filters.wr]
-minimums = {targets = 25}
+minimums = {targets = 30}
 
 [season_agg_filters.te]
-minimums = {targets = 25}
+minimums = {targets = 30}
