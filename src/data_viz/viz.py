@@ -693,8 +693,8 @@ def build_qb_dashboard(df,):
     )
 
 def build_rb_dashboard(df):
-    row1 = alt.hconcat(rb_chart_volume_vs_efficiency(df), rb_chart_receiving_involvement(df))
-    row2 = alt.hconcat(rb_chart_top_rushers(df), rb_chart_player_trajectory(df))
+    row1 = alt.hconcat(rb_chart_top_rushers(df), rb_chart_player_trajectory(df))
+    row2 = alt.hconcat(rb_chart_volume_vs_efficiency(df), rb_chart_receiving_involvement(df))
     row3 = rb_chart_fumble_risk(df)
     return alt.vconcat(row1, row2, row3).properties(
         title=alt.TitleParams("RB Fantasy Football Dashboard", fontSize=20)
