@@ -1,5 +1,6 @@
 from dotenv import load_dotenv
 import pandas as pd
+import numpy as np
 import nflreadpy as nfl
 import altair as alt
 
@@ -65,7 +66,7 @@ def qb_chart_top_fantasy_scorers(df, n = 15):
 
 
 def qb_chart_efficiency(df):
-    """Scatter: CPOE vs passing EPA, sized by attempts, colored by INTs."""
+    """Scatter: CPOE vs passing EPA, sized by attempts, colored by Touchdowns."""
     return (
         alt.Chart(df, title="Accuracy Over Expected vs. EPA")
         .mark_circle(opacity=0.75)
@@ -73,8 +74,8 @@ def qb_chart_efficiency(df):
             x=alt.X("passing_cpoe:Q", title="Completion % Over Expected"),
             y=alt.Y("passing_epa:Q", title="Passing EPA"),
             size=alt.Size("attempts:Q", title="Attempts"),
-            color=alt.Color("passing_interceptions:Q", title="INTs", scale=alt.Scale(scheme="reds")),
-            tooltip=["player", "season", "passing_cpoe", "passing_epa", "passing_interceptions", "attempts"],
+            color=alt.Color("passing_tds:Q", title="Touchdowns", scale=alt.Scale(scheme="reds")),
+            tooltip=["player", "season", "passing_cpoe", "passing_epa", "passing_tds", "attempts"],
         ).add_params(season_filter)
          .transform_filter(alt.datum.season == season_filter)
         .properties(width=600, height=400)
@@ -85,7 +86,7 @@ def qb_chart_efficiency(df):
 def qb_chart_dual_threat(df):
     """Scatter: passing yards vs rushing yards, sized by fantasy points."""
     return (
-        alt.Chart(df, title="Dual-Threat Profile: Passing vs. Rushing")
+        alt.Chart(df, title="Dual-Threat Profile: Passing vs. Rushing, sized by Fantasy Points")
         .mark_circle(opacity=0.75, color="#9467bd")
         .encode(
             x=alt.X("passing_yards:Q", title="Passing Yards"),
@@ -200,7 +201,7 @@ def rb_chart_volume_vs_efficiency(df):
     )
 
 
-def rb_chart_receiving_involvement(df: pd.DataFrame):
+def rb_chart_receiving_involvement(df):
     """Scatter: target share vs receiving yards, colored by RACR."""
     return (
         alt.Chart(df, title="Receiving Involvement")
@@ -217,17 +218,32 @@ def rb_chart_receiving_involvement(df: pd.DataFrame):
     )
 
 
-def rb_chart_player_trajectory(df, players = None):
-    """Line chart: rush yards/game across seasons for selected players (or all)."""
-    data = df if not players else df[df["player"].isin(players)]
+def rb_chart_player_trajectory(df, players=None, top_n=15, min_games=6):
+    """Line chart: avg fantasy points/game across seasons for selected RBs (or the top N)."""
+    data = df.copy()
+    if "data_source" in data.columns:                       # NFL seasons only, no college rows
+        data = data[data["data_source"] == "nflreadpy"]
+    data = data[data["total_games_played"] >= min_games]    # ignore tiny samples
+
+    if players:
+        data = data[data["player"].isin(players)]
+    else:
+        top_players = (
+            data.groupby("player")["avg_fantasy_points"]
+            .mean()
+            .nlargest(top_n)
+            .index
+        )
+        data = data[data["player"].isin(top_players)]
+
     return (
-        alt.Chart(data, title="Rush Yards per Game by Season")
+        alt.Chart(data, title="Avg Fantasy Points per Game by Season")
         .mark_line(point=True)
         .encode(
             x=alt.X("season:O", title="Season"),
-            y=alt.Y("rush_yards_per_game:Q", title="Rush Yds / Game"),
+            y=alt.Y("avg_fantasy_points:Q", title="Avg Fantasy Pts / Game"),
             color=alt.Color("player:N", title="Player"),
-            tooltip=["player:N", "season", "rush_yards_per_game", "carries", "rushing_tds"],
+            tooltip=["player", "season", "avg_fantasy_points", "carries", "rushing_yards"],
         )
         .properties(width=600, height=400)
     )
@@ -255,7 +271,7 @@ def rb_chart_fumble_risk(df):
 WR Functions
 """
 WR_COLOR = "#1f77b4"
-def wr_chart_top_fantasy_scorers(df: pd.DataFrame, n: int = 15) -> alt.Chart:
+def wr_chart_top_fantasy_scorers(df, n = 15):
     """Bar chart: top N WRs by total fantasy points."""
 
     title = f"Top {n} WRs by Fantasy Points"
@@ -278,9 +294,24 @@ def wr_chart_top_fantasy_scorers(df: pd.DataFrame, n: int = 15) -> alt.Chart:
     )
 
 
-def wr_chart_season_trend(df: pd.DataFrame, players: list[str] | None = None) -> alt.Chart:
-    """Line chart: avg fantasy points/game across seasons per player."""
-    data = df if not players else df[df["player"].isin(players)]
+def wr_chart_season_trend(df, players=None, top_n=15, min_games=6):
+    """Line chart: avg fantasy points/game across seasons for selected WRs (or the top N)."""
+    data = df.copy()
+    if "data_source" in data.columns:                       # NFL seasons only, no college rows
+        data = data[data["data_source"] == "nflreadpy"]
+    data = data[data["total_games_played"] >= min_games]    # ignore tiny samples
+
+    if players:
+        data = data[data["player"].isin(players)]
+    else:
+        top_players = (
+            data.groupby("player")["avg_fantasy_points"]
+            .mean()
+            .nlargest(top_n)
+            .index
+        )
+        data = data[data["player"].isin(top_players)]
+
     return (
         alt.Chart(data, title="Avg Fantasy Points per Game by Season")
         .mark_line(point=True)
@@ -288,13 +319,13 @@ def wr_chart_season_trend(df: pd.DataFrame, players: list[str] | None = None) ->
             x=alt.X("season:O", title="Season"),
             y=alt.Y("avg_fantasy_points:Q", title="Avg Fantasy Pts / Game"),
             color=alt.Color("player:N", title="Player"),
-            tooltip=["player", "season", "avg_fantasy_points", "receiving_yards"],
+            tooltip=["player", "season", "avg_fantasy_points", "targets", "receiving_yards"],
         )
         .properties(width=600, height=400)
     )
 
 
-def wr_chart_usage_vs_production(df: pd.DataFrame) -> alt.Chart:
+def wr_chart_usage_vs_production(df):
     """Scatter: target share vs receiving yards, sized by TDs."""
     return (
         alt.Chart(df, title="Target Share vs. Receiving Yards")
@@ -311,7 +342,7 @@ def wr_chart_usage_vs_production(df: pd.DataFrame) -> alt.Chart:
     )
 
 
-def wr_chart_air_yards_efficiency(df: pd.DataFrame) -> alt.Chart:
+def wr_chart_air_yards_efficiency(df):
     """Scatter: air yards share vs target share, colored by RACR."""
     return (
         alt.Chart(df, title="Air Yards Share vs. Target Share (color = RACR)")
@@ -328,7 +359,7 @@ def wr_chart_air_yards_efficiency(df: pd.DataFrame) -> alt.Chart:
     )
 
 
-def wr_chart_explosiveness(df: pd.DataFrame) -> alt.Chart:
+def wr_chart_explosiveness(df):
     """Scatter: yards/catch vs 20+ yard receptions."""
     return (
         alt.Chart(df, title="Big-Play Ability")
@@ -343,7 +374,7 @@ def wr_chart_explosiveness(df: pd.DataFrame) -> alt.Chart:
     )
 
 
-def wr_chart_fantasy_distribution(df: pd.DataFrame) -> alt.Chart:
+def wr_chart_fantasy_distribution(df):
     """Histogram: distribution of avg fantasy points per game."""
     return (
         alt.Chart(df, title="Distribution of Avg Fantasy Points per Game")
@@ -361,7 +392,7 @@ def wr_chart_fantasy_distribution(df: pd.DataFrame) -> alt.Chart:
 TE Functions
 """
 TE_COLOR = "#ff7f0e"
-def te_chart_top_fantasy_scorers(df: pd.DataFrame, n: int = 15) -> alt.Chart:
+def te_chart_top_fantasy_scorers(df, n = 15):
     """Bar chart: top N TEs by total fantasy points."""
 
     title = f"Top {n} TEs by Fantasy Points"
@@ -385,9 +416,24 @@ def te_chart_top_fantasy_scorers(df: pd.DataFrame, n: int = 15) -> alt.Chart:
     )
 
 
-def te_chart_season_trend(df: pd.DataFrame, players: list[str] | None = None) -> alt.Chart:
-    """Line chart: avg fantasy points/game across seasons per player."""
-    data = df if not players else df[df["player"].isin(players)]
+def te_chart_season_trend(df, players=None, top_n=15, min_games=6):
+    """Line chart: avg fantasy points/game across seasons for selected TEs (or the top N)."""
+    data = df.copy()
+    if "data_source" in data.columns:                       # NFL seasons only, no college rows
+        data = data[data["data_source"] == "nflreadpy"]
+    data = data[data["total_games_played"] >= min_games]    # ignore tiny samples
+
+    if players:
+        data = data[data["player"].isin(players)]
+    else:
+        top_players = (
+            data.groupby("player")["avg_fantasy_points"]
+            .mean()
+            .nlargest(top_n)
+            .index
+        )
+        data = data[data["player"].isin(top_players)]
+
     return (
         alt.Chart(data, title="Avg Fantasy Points per Game by Season")
         .mark_line(point=True)
@@ -395,13 +441,13 @@ def te_chart_season_trend(df: pd.DataFrame, players: list[str] | None = None) ->
             x=alt.X("season:O", title="Season"),
             y=alt.Y("avg_fantasy_points:Q", title="Avg Fantasy Pts / Game"),
             color=alt.Color("player:N", title="Player"),
-            tooltip=["player", "season", "avg_fantasy_points", "receiving_yards"],
+            tooltip=["player", "season", "avg_fantasy_points", "targets", "receiving_yards"],
         )
         .properties(width=600, height=400)
     )
 
 
-def te_chart_usage_vs_production(df: pd.DataFrame) -> alt.Chart:
+def te_chart_usage_vs_production(df):
     """Scatter: target share vs receiving yards, sized by TDs."""
     return (
         alt.Chart(df, title="Target Share vs. Receiving Yards")
@@ -418,7 +464,7 @@ def te_chart_usage_vs_production(df: pd.DataFrame) -> alt.Chart:
     )
 
 
-def te_chart_air_yards_efficiency(df: pd.DataFrame) -> alt.Chart:
+def te_chart_air_yards_efficiency(df):
     """Scatter: air yards share vs target share, colored by RACR."""
     return (
         alt.Chart(df, title="Air Yards Share vs. Target Share (color = RACR)")
@@ -435,7 +481,7 @@ def te_chart_air_yards_efficiency(df: pd.DataFrame) -> alt.Chart:
     )
 
 
-def te_chart_explosiveness(df: pd.DataFrame) -> alt.Chart:
+def te_chart_explosiveness(df):
     """Scatter: yards/catch vs 10+ yard receptions."""
     return (
         alt.Chart(df, title="Big-Play Ability")
@@ -450,7 +496,7 @@ def te_chart_explosiveness(df: pd.DataFrame) -> alt.Chart:
     )
 
 
-def te_chart_fantasy_distribution(df: pd.DataFrame) -> alt.Chart:
+def te_chart_fantasy_distribution(df):
     """Histogram: distribution of avg fantasy points per game."""
     return (
         alt.Chart(df, title="Distribution of Avg Fantasy Points per Game")
@@ -467,7 +513,7 @@ def te_chart_fantasy_distribution(df: pd.DataFrame) -> alt.Chart:
 ## All-In Functions
 
 
-def chart_fantasy_distribution(df: pd.DataFrame) -> alt.Chart:
+def chart_fantasy_distribution(df):
     """Histogram: distribution of avg fantasy points per game."""
     return (
         alt.Chart(df, title="Distribution of Avg Fantasy Points per Game")
@@ -654,7 +700,7 @@ def build_rb_dashboard(df):
         title=alt.TitleParams("RB Fantasy Football Dashboard", fontSize=20)
     )
 
-def build_wr_dashboard(df: pd.DataFrame) -> alt.VConcatChart:
+def build_wr_dashboard(df):
     row1 = alt.hconcat(wr_chart_top_fantasy_scorers(df), wr_chart_season_trend(df))
     row2 = alt.hconcat(wr_chart_usage_vs_production(df), wr_chart_air_yards_efficiency(df))
     row3 = alt.hconcat(wr_chart_explosiveness(df), wr_chart_fantasy_distribution(df))
@@ -662,7 +708,7 @@ def build_wr_dashboard(df: pd.DataFrame) -> alt.VConcatChart:
         title=alt.TitleParams("WR Fantasy Football Dashboard", fontSize=20)
     )
 
-def build_te_dashboard(df: pd.DataFrame) -> alt.VConcatChart:
+def build_te_dashboard(df):
     row1 = alt.hconcat(te_chart_top_fantasy_scorers(df), te_chart_season_trend(df))
     row2 = alt.hconcat(te_chart_usage_vs_production(df), te_chart_air_yards_efficiency(df))
     row3 = alt.hconcat(te_chart_explosiveness(df), te_chart_fantasy_distribution(df))
