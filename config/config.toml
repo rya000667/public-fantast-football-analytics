@@ -10,3 +10,16 @@ def_pos_list = ['DE', 'DT', 'LB', 'CB', 'S', 'FS', 'MLB', 'NT', 'ILB', 'DL', 'DB
 special_teams_pos_list = ['K', 'P', 'LS']
 
 GLOBAL_POSITION_GROUPBY_COLS = ['player', 'position', 'season', 'data_source']
+
+# agg_season global dashboard filters
+[season_agg_filters.qb] 
+minimums = {attempts = 100}
+
+[season_agg_filters.rb]
+minimums = {carries = 50}
+
+[season_agg_filters.wr]
+minimums = {targets = 25}
+
+[season_agg_filters.te]
+minimums = {targets = 25}
