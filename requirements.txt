@@ -7,3 +7,5 @@ altair
 numpy
 plotly
 matplotlib
+black
+black[jupyter]
