@@ -46,11 +46,16 @@ For this, we created a narrative jupyter notebook that we converted to PDF and r
 In addition to additional python modules like nbconvert being added to requirements.txt, we also had to intall an additional command line tool called pandoc that nbconvert called on.
 
 ```
+# pandoc is needed by nbconvert to convert the markdown cells in the notebooks
 # setup pandoc on mac
 brew install pandoc
+
+# setup pandoc on windows
+winget install --id JohnMacFarlane.Pandoc -e
 ```
 
 ```
+# Chromium is needed by nbconvert's to webpdf because this renders in HTML (where Chromium opens the page in HTML for nbconvert's conversion)
 # Install Chromium for playwright
 playwright install chromium
 ```
