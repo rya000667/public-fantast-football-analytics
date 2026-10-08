@@ -403,13 +403,54 @@ def chart_driver_scatter(df: pd.DataFrame, position: str) -> alt.LayerChart:
         )
     )
 
+def chart_efficiency_scatter(df: pd.DataFrame, position: str) -> alt.LayerChart:
+    """Scatter + trend line: the position's main efficiency stat vs fantasy points per game.
+    Follows the season filter; r in the subtitle uses all seasons."""
+    feats = corr_features(df, position)
+    opp = OPP_EFF_SAME[position][1]
+    data = feats[["player", "season", "ppg"]].assign(x=feats[opp])
+    r = data["x"].corr(data["ppg"])
+    base = alt.Chart(data).transform_filter(alt.datum.season == season_filter)
+    points = base.mark_circle(
+        opacity=0.65, size=70, color=POSITION_COLORS[position]
+    ).encode(
+        x=alt.X("x:Q", title=opp),
+        y=alt.Y("ppg:Q", title="Fantasy Pts / Game"),
+        tooltip=[
+            "player",
+            "season",
+            alt.Tooltip("x:Q", title=opp, format=".1f"),
+            alt.Tooltip("ppg:Q", title="Fantasy Pts / Game", format=".1f"),
+        ],
+    )
+    trend = (
+        base.transform_regression("x", "ppg")
+        .mark_line(color="black", strokeDash=[4, 3])
+        .encode(x="x:Q", y="ppg:Q")
+    )
+    return (
+        alt.layer(points, trend)
+        .add_params(season_filter)
+        .properties(
+            title=alt.TitleParams(
+                f"{position}: {opp} vs. Fantasy Points",
+                subtitle=f"r = {r:.2f} across all seasons. Dots and trend line follow the season filter.",
+            ),
+            width=450,
+            height=250,
+        )
+    )
 
-def _correlation_block(df: pd.DataFrame, position: str) -> alt.HConcatChart:
-    """Correlation bars on the left, opportunity-vs-efficiency and scatter stacked on the right."""
-    return alt.hconcat(
-        chart_driver_correlations(df, position),
-        alt.vconcat(
+
+def _correlation_block(df: pd.DataFrame, position: str) -> alt.VConcatChart:
+    """2x2 grid: correlations and opportunity-vs-efficiency on top, the two scatters below."""
+    return alt.vconcat(
+        alt.hconcat(
+            chart_driver_correlations(df, position),
             chart_opportunity_vs_efficiency(df, position),
+        ),
+        alt.hconcat(
+            chart_efficiency_scatter(df, position),
             chart_driver_scatter(df, position),
         ),
     )
