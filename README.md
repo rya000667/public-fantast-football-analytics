@@ -99,7 +99,7 @@ pip install jupyter "nbconvert[webpdf]"
 **Mac/Linux**
 
 ```
-jupyter nbconvert --to webpdf --no-input 'Fantasy Football Metrics Core Analysis.ipynb' --output-dir PDFs --output fantasy-football-narrative
+jupyter nbconvert --to webpdf --no-input 'Fantasy Football Metrics Core Analysis PDF Source.ipynb' --output-dir PDFs --output fantasy-football-narrative
 ```
 
 **Windows**
