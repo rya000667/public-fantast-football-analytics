@@ -403,6 +403,7 @@ def chart_driver_scatter(df: pd.DataFrame, position: str) -> alt.LayerChart:
         )
     )
 
+
 def chart_efficiency_scatter(df: pd.DataFrame, position: str) -> alt.LayerChart:
     """Scatter + trend line: the position's main efficiency stat vs fantasy points per game.
     Follows the season filter; r in the subtitle uses all seasons."""
