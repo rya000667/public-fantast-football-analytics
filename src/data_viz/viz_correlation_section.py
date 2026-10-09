@@ -103,7 +103,7 @@ def _rb_features(d):
         + d["receptions"]
         + (d["rushing_tds"] + d["receiving_tds"]) * 6
         + (d["rushing_2pt_conversions"] + d["receiving_2pt_conversions"]) * 2
-        - (d["rushing_fumbles"] + d["receiving_fumbles"]) * 2
+        - (d["rushing_fumbles_lost"] + d["receiving_fumbles_lost"]) * 2
     )
     targets = d["targets"].replace(0, np.nan)
     return pd.DataFrame(
@@ -133,7 +133,7 @@ def _receiver_features(d):
         + d["receptions"]
         + d["receiving_tds"] * 6
         + d["receiving_2pt_conversions"] * 2
-        - d["receiving_fumbles"] * 2
+        - d["receiving_fumbles_lost"] * 2
     )
     recs = d["receptions"].replace(0, np.nan)
     return pd.DataFrame(

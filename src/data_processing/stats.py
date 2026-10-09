@@ -176,7 +176,7 @@ def add_fantasy_points(season_agg: pd.DataFrame, ppr: float = 0) -> pd.DataFrame
     """
     season_agg["fantasy_points"] = (
         season_agg["passing_yards"] * 0.04
-        + season_agg["passing_tds"] * 4
+        + season_agg["passing_tds"] * 6
         - season_agg["passing_interceptions"] * 2
         + season_agg["rushing_yards"] * 0.1
         + season_agg["rushing_tds"] * 6

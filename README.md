@@ -177,7 +177,7 @@ The motivation for us to work on this project is we are all sports fanatics.  Fu
 
 **Data**
 
-The analysis combines NFL and college player statistics. The NFL data (sourced through the `nflreadpy` package) has one row per player per week for 2018–2025. The college data is summarized by season. Because the two sources are structured differently, the analysis focuses on NFL players who return season after season.
+The analysis combines NFL and college player statistics. The NFL data (sourced through the `nflreadpy` package) has one row per player per week for 2018–2026. The college data is summarized by season. Because the two sources are structured differently, the analysis focuses on NFL players who return season after season.
 
 **Topics covered**
 
@@ -197,7 +197,7 @@ The goal is a strategic framework for drafting: which positions to prioritize an
 - Dynasty process: https://github.com/dynastyprocess/data <br>
 - Ffopportunity: https://github.com/ffverse/ffopportunity <br>
 
-One season of player stats data has 18,643 records and 150 columns.  We used data for NFL seasons between 2018-2025 and the total size of the nflverse data we used from nflreadpy was 151,675 rows and 150 columns.  This data was served in polars, which we converted into pandas. 
+One season of player stats data has 18,643 records and 150 columns.  We used data for NFL seasons between 2018-2026 and the total size of the nflverse data we used from nflreadpy was 151,675 rows and 150 columns.  This data was served in polars, which we converted into pandas. 
 
 **Significant Columns**
 - player_display_name (which we later normalized to player)
@@ -220,7 +220,7 @@ The STAT column was also important as it had all the categories we used for stat
 - /stats/player/season (for season data)
 
 
-For this project, we used two primary data sources, nflverse through the python nflreadpy package and the CollegeFootballData API via API key.  The nflverse dataset provides player statistics at the week level, which we aggregated to the season level for analysis.  This dataset has one row per player per week for 2018-2025.  The CollegeFootballData API provides college football data at the season level, which we normalized and joined to the NFL data via a join key of position-player-season (note this was a concat since the records are distinct as no one, at least currently. can play in the NFL and college for the same season).  We did the normalizations via mappings files in the mappings directory that are used by data processing utility functions in the src/data_processing/utils_data_cleansing.py file.  Because the two sources differ in grain, the analysis focuses on returning NFL players and measures efficiency in fantasy points per game. Every analysis is run under both PPR and non-PPR scoring, since the one-point-per-reception rule changes which players and positions are most valuable.  We also applied minimum thresholds on things like passing attempts, rush attempts, and receiving targets that are in our config file to filter out potential noise in the data due to low player samples.
+For this project, we used two primary data sources, nflverse through the python nflreadpy package and the CollegeFootballData API via API key.  The nflverse dataset provides player statistics at the week level, which we aggregated to the season level for analysis.  This dataset has one row per player per week for 2018-2026.  The CollegeFootballData API provides college football data at the season level, which we normalized and joined to the NFL data via a join key of position-player-season (note this was a concat since the records are distinct as no one, at least currently. can play in the NFL and college for the same season).  We did the normalizations via mappings files in the mappings directory that are used by data processing utility functions in the src/data_processing/utils_data_cleansing.py file.  Because the two sources differ in grain, the analysis focuses on returning NFL players and measures efficiency in fantasy points per game. Every analysis is run under both PPR and non-PPR scoring, since the one-point-per-reception rule changes which players and positions are most valuable.  We also applied minimum thresholds on things like passing attempts, rush attempts, and receiving targets that are in our config file to filter out potential noise in the data due to low player samples.
 
 ## Data Manipulation
 For this project, we sought to use and combine two data sources, the nflverse data provided via nflreadpy and data from CollegeFootballData API.  The nflverse data through nflreadpy was provided in polars, which we converted to a pandas dataframe.  This data was provided at the week level, where each row represented a players stats for that week (assuming they played a game).  We used a mapping file to standardize some of the column names (across this dataset and the CollegeFootballData dataset).  Some of the column mappings we applied were player_display_name to player for the nflverse data and a number of coluumn renames to the CollegeFootballData, such as INT to passing_interceptions to standardize on column names between datasets.  The full details of the column changes for CollegeFootballData can be found here: mappings/college_football_stats_mapping.csv.  
