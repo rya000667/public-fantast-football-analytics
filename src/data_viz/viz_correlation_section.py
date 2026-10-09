@@ -272,7 +272,7 @@ def chart_driver_correlations(df: pd.DataFrame, position: str) -> alt.LayerChart
         .transform_filter("datum.correlation < 0")
     )
     return alt.layer(bars, labels_pos, labels_neg).properties(
-        title=title, width=450, height=alt.Step(20)
+        title=title, width=400, height=alt.Step(20)
     )
 
 
@@ -318,7 +318,7 @@ def chart_opportunity_vs_efficiency(df: pd.DataFrame, position: str) -> alt.Laye
         text=alt.Text("correlation:Q", format=".2f"), color=alt.value("black")
     )
     return alt.layer(base.mark_bar(), labels).properties(
-        title=title, width=450, height=220
+        title=title, width=400, height=200
     )
 
 
@@ -398,8 +398,8 @@ def chart_driver_scatter(df: pd.DataFrame, position: str) -> alt.LayerChart:
                 f"{position}: {opp} vs. Fantasy Points",
                 subtitle=f"r = {r:.2f} across all seasons. Dots and trend line follow the season filter.",
             ),
-            width=450,
-            height=250,
+            width=400,
+            height=200,
         )
     )
 
@@ -437,8 +437,8 @@ def chart_efficiency_scatter(df: pd.DataFrame, position: str) -> alt.LayerChart:
                 f"{position}: {opp} vs. Fantasy Points",
                 subtitle=f"r = {r:.2f} across all seasons. Dots and trend line follow the season filter.",
             ),
-            width=450,
-            height=250,
+            width=400,
+            height=200,
         )
     )
 

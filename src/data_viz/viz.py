@@ -75,7 +75,7 @@ def qb_chart_top_fantasy_scorers(df, n=15):
         .add_params(season_filter, data_source_filter)
         .transform_filter(alt.datum.season == season_filter)
         .transform_filter(alt.datum.data_source == data_source_filter)
-        .properties(width=600, height=alt.Step(20))
+        .properties(width=300, height=alt.Step(20))
     )
 
 
@@ -103,7 +103,7 @@ def qb_chart_efficiency(df):
         .add_params(season_filter, data_source_filter)
         .transform_filter(alt.datum.season == season_filter)
         .transform_filter(alt.datum.data_source == data_source_filter)
-        .properties(width=600, height=400)
+        .properties(width=300, height=300)
         .interactive("pan_zoom_efficiency")
     )
 
@@ -132,7 +132,7 @@ def qb_chart_dual_threat(df):
         .add_params(season_filter, data_source_filter)
         .transform_filter(alt.datum.season == season_filter)
         .transform_filter(alt.datum.data_source == data_source_filter)
-        .properties(width=600, height=400)
+        .properties(width=300, height=300)
         .interactive("pan_zoom_dual_threat")
     )
 
@@ -162,7 +162,7 @@ def qb_chart_season_trend(df, players=None, top_n=20):
                 "passing_interceptions",
             ],
         )
-        .properties(width=600, height=400)
+        .properties(width=300, height=300)
     )
 
 
@@ -191,7 +191,7 @@ def qb_chart_sack_risk(df):
         .add_params(season_filter, data_source_filter)
         .transform_filter(alt.datum.season == season_filter)
         .transform_filter(alt.datum.data_source == data_source_filter)
-        .properties(width=600, height=350)
+        .properties(width=300, height=300)
     )
 
 
@@ -214,7 +214,7 @@ def qb_chart_td_int_ratio(df):
         .add_params(season_filter, data_source_filter)
         .transform_filter(alt.datum.season == season_filter)
         .transform_filter(alt.datum.data_source == data_source_filter)
-        .properties(width=600, height=350)
+        .properties(width=300, height=300)
     )
 
 
@@ -249,7 +249,7 @@ def rb_chart_top_rushers(df, n=15):
                 "rushing_tds",
             ],
         )
-        .properties(width=600, height=alt.Step(20))
+        .properties(width=300, height=alt.Step(20))
     )
 
 
@@ -279,7 +279,7 @@ def rb_chart_top_fantasy_scorers(df, n=15):
                 "rushing_tds",
             ],
         )
-        .properties(width=600, height=alt.Step(20))
+        .properties(width=300, height=alt.Step(20))
     )
 
 
@@ -309,7 +309,7 @@ def rb_chart_volume_vs_efficiency(df):
         .add_params(season_filter, data_source_filter)
         .transform_filter(alt.datum.season == season_filter)
         .transform_filter(alt.datum.data_source == data_source_filter)
-        .properties(width=600, height=400)
+        .properties(width=300, height=300)
         .interactive("pan_zoom_efficiency")
     )
 
@@ -336,7 +336,7 @@ def rb_chart_receiving_involvement(df):
         .add_params(season_filter, data_source_filter)
         .transform_filter(alt.datum.season == season_filter)
         .transform_filter(alt.datum.data_source == data_source_filter)
-        .properties(width=600, height=400)
+        .properties(width=300, height=300)
         .interactive("pan_zoom_receiving")
     )
 
@@ -373,7 +373,7 @@ def rb_chart_player_trajectory(df, players=None, top_n=15, min_games=6):
                 "rushing_yards",
             ],
         )
-        .properties(width=600, height=400)
+        .properties(width=300, height=300)
     )
 
 
@@ -395,7 +395,7 @@ def rb_chart_fumble_risk(df):
         .add_params(season_filter, data_source_filter)
         .transform_filter(alt.datum.season == season_filter)
         .transform_filter(alt.datum.data_source == data_source_filter)
-        .properties(width=600, height=350)
+        .properties(width=300, height=300)
     )
 
 
@@ -432,7 +432,7 @@ def wr_chart_top_fantasy_scorers(df, n=15):
         .add_params(season_filter, data_source_filter)
         .transform_filter(alt.datum.season == season_filter)
         .transform_filter(alt.datum.data_source == data_source_filter)
-        .properties(width=600, height=alt.Step(20))
+        .properties(width=300, height=alt.Step(20))
     )
 
 
@@ -466,7 +466,7 @@ def wr_chart_season_trend(df, players=None, top_n=15, min_games=6):
                 "receiving_yards",
             ],
         )
-        .properties(width=600, height=400)
+        .properties(width=300, height=300)
     )
 
 
@@ -490,7 +490,7 @@ def wr_chart_usage_vs_production(df):
         .add_params(season_filter, data_source_filter)
         .transform_filter(alt.datum.season == season_filter)
         .transform_filter(alt.datum.data_source == data_source_filter)
-        .properties(width=600, height=400)
+        .properties(width=300, height=300)
         .interactive("pan_zoom_usage")
     )
 
@@ -511,7 +511,7 @@ def wr_chart_air_yards_efficiency(df):
         .add_params(season_filter, data_source_filter)
         .transform_filter(alt.datum.season == season_filter)
         .transform_filter(alt.datum.data_source == data_source_filter)
-        .properties(width=600, height=400)
+        .properties(width=300, height=300)
         .interactive("pan_zoom_air")
     )
 
@@ -535,7 +535,7 @@ def wr_chart_explosiveness(df):
         .add_params(season_filter, data_source_filter)
         .transform_filter(alt.datum.season == season_filter)
         .transform_filter(alt.datum.data_source == data_source_filter)
-        .properties(width=600, height=350)
+        .properties(width=300, height=300)
     )
 
 
@@ -555,7 +555,7 @@ def wr_chart_fantasy_distribution(df):
         .add_params(season_filter, data_source_filter)
         .transform_filter(alt.datum.season == season_filter)
         .transform_filter(alt.datum.data_source == data_source_filter)
-        .properties(width=600, height=350)
+        .properties(width=300, height=300)
     )
 
 
@@ -593,7 +593,7 @@ def te_chart_top_fantasy_scorers(df, n=15):
         .add_params(season_filter, data_source_filter)
         .transform_filter(alt.datum.season == season_filter)
         .transform_filter(alt.datum.data_source == data_source_filter)
-        .properties(width=600, height=alt.Step(20))
+        .properties(width=300, height=alt.Step(20))
     )
 
 
@@ -627,7 +627,7 @@ def te_chart_season_trend(df, players=None, top_n=15, min_games=6):
                 "receiving_yards",
             ],
         )
-        .properties(width=600, height=400)
+        .properties(width=300, height=300)
     )
 
 
@@ -651,7 +651,7 @@ def te_chart_usage_vs_production(df):
         .add_params(season_filter, data_source_filter)
         .transform_filter(alt.datum.season == season_filter)
         .transform_filter(alt.datum.data_source == data_source_filter)
-        .properties(width=600, height=400)
+        .properties(width=300, height=300)
         .interactive("pan_zoom_usage")
     )
 
@@ -672,7 +672,7 @@ def te_chart_air_yards_efficiency(df):
         .add_params(season_filter, data_source_filter)
         .transform_filter(alt.datum.season == season_filter)
         .transform_filter(alt.datum.data_source == data_source_filter)
-        .properties(width=600, height=400)
+        .properties(width=300, height=300)
         .interactive("pan_zoom_air")
     )
 
@@ -696,7 +696,7 @@ def te_chart_explosiveness(df):
         .add_params(season_filter, data_source_filter)
         .transform_filter(alt.datum.season == season_filter)
         .transform_filter(alt.datum.data_source == data_source_filter)
-        .properties(width=600, height=350)
+        .properties(width=300, height=300)
     )
 
 
@@ -716,7 +716,7 @@ def te_chart_fantasy_distribution(df):
         .add_params(season_filter, data_source_filter)
         .transform_filter(alt.datum.season == season_filter)
         .transform_filter(alt.datum.data_source == data_source_filter)
-        .properties(width=600, height=350)
+        .properties(width=300, height=300)
     )
 
 
@@ -738,7 +738,7 @@ def chart_fantasy_distribution(df):
         )
         .add_params(season_filter)
         .transform_filter(alt.datum.season == season_filter)
-        .properties(width=600, height=350)
+        .properties(width=300, height=300)
     )
 
 
@@ -768,7 +768,7 @@ def chart_fantasy_distribution_by_position(
         )
         .add_params(season_filter)
         .transform_filter(alt.datum.season == season_filter)
-        .properties(width=600, height=120)
+        .properties(width=300, height=120)
         .facet(row=alt.Row("position:N", sort=positions, title=None))
         .resolve_scale(y="independent")
         .properties(title=title)
@@ -803,7 +803,7 @@ def chart_fantasy_boxplot_by_position(
         )
         .add_params(season_filter)
         .transform_filter(alt.datum.season == season_filter)
-        .properties(width=600, height=alt.Step(45))
+        .properties(width=300, height=alt.Step(45))
     )
 
 
